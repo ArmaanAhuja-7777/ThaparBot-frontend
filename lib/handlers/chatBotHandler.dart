@@ -14,7 +14,7 @@ class ChatBotHandler {
       print(chatSessionId);
       final response = await http.post(
         Uri.parse(
-            'http://localhost:5000/api/chatbot/getresponse'), // Replace with your backend URL
+            'https://thaparbot-backend.onrender.com/api/chatbot/getresponse'), // Replace with your backend URL
         headers: {'Content-Type': 'application/json'},
         body: json.encode({
           'user_id': userId,

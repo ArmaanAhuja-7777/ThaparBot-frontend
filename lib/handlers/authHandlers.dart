@@ -14,7 +14,8 @@ class AuthHandler {
     required String password,
   }) async {
     // API URL for login (replace with your backend login endpoint)
-    final String apiUrl = 'http://localhost:5000/api/auth/login';
+    final String apiUrl =
+        'https://thaparbot-backend.onrender.com/api/auth/login';
 
     // Prepare data to send in the request body
     final Map<String, String> loginData = {
@@ -62,7 +63,8 @@ class AuthHandler {
       required String password,
       required String userId}) async {
     // API URL for signup (replace with your backend signup endpoint)
-    final String apiUrl = 'http://localhost:5000/api/auth/register';
+    final String apiUrl =
+        'https://thaparbot-backend.onrender.com/api/auth/register';
 
     // Prepare data to send in the request body
     final Map<String, String> signupData = {

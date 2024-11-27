@@ -33,7 +33,7 @@ class _AuthScreenState extends State<AuthScreen> {
           _nameController.text.isEmpty) {
         setState(() {
           _errorMessage =
-              'Please fill in all fields (email, password, user ID and name).';
+              'Please fill in all fields (email, password, user ID, and name).';
         });
         return;
       }
@@ -60,11 +60,6 @@ class _AuthScreenState extends State<AuthScreen> {
       final String password = _passwordController.text;
       final String userId = _userIdController.text;
       final String name = _nameController.text;
-
-      print(email);
-      print(password);
-      print(userId);
-      print(name);
 
       if (_isSignup) {
         // Handle signup
@@ -101,93 +96,130 @@ class _AuthScreenState extends State<AuthScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
       appBar: AppBar(
         title: Text(
-            _isSignup ? 'Sign Up' : 'Login'), // Title changes based on the mode
+          _isSignup ? 'Sign Up' : 'Login',
+          style: TextStyle(color: Colors.white),
+        ),
+        backgroundColor: Constants.KThaparColor,
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Center(
-          child: SingleChildScrollView(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                // Name input for signup
-                if (_isSignup) ...[
-                  TextField(
-                    controller: _nameController,
-                    decoration: InputDecoration(
-                      labelText: 'Name',
-                      border: OutlineInputBorder(),
-                      hintText: 'Enter your full name',
+      body: Stack(
+        children: [
+          // Background image
+          Positioned.fill(
+              child: Opacity(
+            opacity: 0.5,
+            child: Image.asset(
+              'assets/images/thapar.jpg', // Replace with the path to your image
+              fit: BoxFit.cover,
+            ),
+          )),
+          // Content with semi-transparent background
+          Positioned.fill(
+            child: Container(
+              color: Colors.black.withOpacity(0.5), // Semi-transparent overlay
+              child: Center(
+                child: SingleChildScrollView(
+                  child: Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        // Name input for signup
+                        if (_isSignup) ...[
+                          TextField(
+                            style: TextStyle(color: Colors.white),
+                            controller: _nameController,
+                            decoration: InputDecoration(
+                              labelText: 'Name',
+                              labelStyle: TextStyle(color: Colors.white),
+                              border: OutlineInputBorder(),
+                              hintText: 'Enter your full name',
+                              hintStyle: TextStyle(color: Colors.white54),
+                            ),
+                          ),
+                          SizedBox(height: 16),
+                        ],
+                        TextField(
+                          style: TextStyle(color: Colors.white),
+                          controller: _emailController,
+                          decoration: InputDecoration(
+                            labelText: 'Email',
+                            labelStyle: TextStyle(color: Colors.white),
+                            border: OutlineInputBorder(),
+                            hintText: 'Enter your email',
+                            hintStyle: TextStyle(color: Colors.white54),
+                          ),
+                          keyboardType: TextInputType.emailAddress,
+                        ),
+                        SizedBox(height: 16),
+                        TextField(
+                          style: TextStyle(color: Colors.white),
+                          controller: _passwordController,
+                          decoration: InputDecoration(
+                            labelText: 'Password',
+                            labelStyle: TextStyle(color: Colors.white),
+                            border: OutlineInputBorder(),
+                            hintText: 'Enter your password',
+                            hintStyle: TextStyle(color: Colors.white54),
+                          ),
+                          obscureText: true,
+                        ),
+                        SizedBox(height: 16),
+                        TextField(
+                          style: TextStyle(color: Colors.white),
+                          controller: _userIdController,
+                          decoration: InputDecoration(
+                            labelText: 'User ID/ Roll No.',
+                            labelStyle: TextStyle(color: Colors.white),
+                            border: OutlineInputBorder(),
+                            hintText: 'Enter your unique user ID',
+                            hintStyle: TextStyle(color: Colors.white54),
+                          ),
+                        ),
+                        SizedBox(height: 16),
+                        if (_isLoading)
+                          CircularProgressIndicator()
+                        else
+                          ElevatedButton(
+                            onPressed: _authenticate,
+                            child: Text(
+                              _isSignup ? 'Sign Up' : 'Login',
+                              style: TextStyle(color: Colors.white),
+                            ),
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Constants.KThaparColor,
+                            ),
+                          ),
+                        SizedBox(height: 16),
+                        if (_errorMessage.isNotEmpty)
+                          Text(
+                            _errorMessage,
+                            style: TextStyle(color: Colors.red),
+                          ),
+                        SizedBox(height: 16),
+                        TextButton(
+                          onPressed: () {
+                            setState(() {
+                              _isSignup =
+                                  !_isSignup; // Toggle between signup and login
+                            });
+                          },
+                          child: Text(
+                            _isSignup
+                                ? 'Already have an account? Login'
+                                : 'Don\'t have an account? Sign Up',
+                            style: TextStyle(color: Colors.white),
+                          ),
+                        ),
+                      ],
                     ),
                   ),
-                  SizedBox(height: 16),
-                ],
-                TextField(
-                  controller: _emailController,
-                  decoration: InputDecoration(
-                    labelText: 'Email',
-                    border: OutlineInputBorder(),
-                    hintText: 'Enter your email',
-                  ),
-                  keyboardType: TextInputType.emailAddress,
                 ),
-                SizedBox(height: 16),
-                TextField(
-                  controller: _passwordController,
-                  decoration: InputDecoration(
-                    labelText: 'Password',
-                    border: OutlineInputBorder(),
-                    hintText: 'Enter your password',
-                  ),
-                  obscureText: true,
-                ),
-                SizedBox(height: 16),
-                TextField(
-                  controller: _userIdController,
-                  decoration: InputDecoration(
-                    labelText: 'User ID  (Please remember this)',
-                    border: OutlineInputBorder(),
-                    hintText: 'Enter your unique user ID',
-                  ),
-                ),
-                SizedBox(height: 16),
-                if (_isLoading)
-                  CircularProgressIndicator()
-                else
-                  ElevatedButton(
-                    onPressed: _authenticate,
-                    child: Text(
-                      _isSignup ? 'Sign Up' : 'Login',
-                      style: TextStyle(color: Constants.KThaparColor),
-                    ), // Button text changes based on the mode
-                  ),
-                SizedBox(height: 16),
-                if (_errorMessage.isNotEmpty)
-                  Text(
-                    _errorMessage,
-                    style: TextStyle(color: Colors.red),
-                  ),
-                SizedBox(height: 16),
-                TextButton(
-                  onPressed: () {
-                    setState(() {
-                      _isSignup = !_isSignup; // Toggle between signup and login
-                    });
-                  },
-                  child: Text(
-                    _isSignup
-                        ? 'Already have an account? Login'
-                        : 'Don\'t have an account? Sign Up',
-                    style: TextStyle(color: Constants.KThaparColor),
-                  ),
-                ),
-              ],
+              ),
             ),
           ),
-        ),
+        ],
       ),
     );
   }

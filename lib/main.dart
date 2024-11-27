@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:thapar_chatbot/screens/chatpage.dart';
 import 'package:thapar_chatbot/screens/splashScreen.dart';
 
 void main() {
